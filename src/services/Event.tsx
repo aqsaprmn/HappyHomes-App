@@ -1,12 +1,19 @@
 import Instance from "./Instance";
 
-export const GETAllEvents = async ({ search }: { search?: string }) => {
+export const GETAllEvents = async ({
+  search,
+  project,
+}: {
+  search?: string;
+  project?: string[];
+}) => {
   try {
     const fetching = await Instance.get(
       `${import.meta.env.VITE_GET_LIST_EVENT}`,
       {
         params: {
           search,
+          project,
         },
       }
     );

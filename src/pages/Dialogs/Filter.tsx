@@ -22,18 +22,26 @@ const Transition = React.forwardRef(function Transition(
 export default function Filter({
   open,
   handleClose,
+  setProject,
 }: {
   open: boolean;
   handleClose: () => void;
+  setProject: (e: string[]) => void;
 }) {
-  const [project, setProject] = React.useState([]);
+  const [data, setData] = React.useState([]);
 
-  const { handleSubmit, setFieldValue } = useFormik({
+  const { handleSubmit, resetForm, setFieldValue } = useFormik({
     initialValues: {
-      projectName: "",
+      projectName: [],
     },
     onSubmit: async (val: any) => {
-      console.log(val);
+      const filtProject = val.projectName.map((i: any) => i.title);
+
+      setProject(filtProject);
+
+      resetForm();
+
+      handleClose();
     },
   });
 
@@ -47,7 +55,7 @@ export default function Filter({
       };
     });
 
-    setProject(data);
+    setData(data);
   };
 
   React.useEffect(() => {
@@ -83,7 +91,7 @@ export default function Filter({
               multiple
               limitTags={2}
               id="Proyek"
-              options={project}
+              options={data}
               filterSelectedOptions
               renderOption={(props, option) => {
                 return (

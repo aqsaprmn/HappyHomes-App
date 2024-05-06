@@ -70,8 +70,10 @@ const TimesheetPage = () => {
   const [tick, setTick] = useState<number>(0);
   const [value, setValue] = useState<number>(0);
   const [search, setSearch] = useState<any>("");
+  const [project, setProject] = useState<string[]>([]);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
+    event;
     setValue(newValue);
   };
 
@@ -213,12 +215,20 @@ const TimesheetPage = () => {
   ];
 
   const dataFetching = async () => {
-    let searchGo = {
+    let searchGo: {
+      search: string;
+      project: string[];
+    } = {
       search: "",
+      project: [],
     };
 
     if (search != "") {
       searchGo.search = search;
+    }
+
+    if (project.length > 0) {
+      searchGo.project = project;
     }
 
     const fetching = await GETAllEvents(searchGo);
@@ -279,7 +289,7 @@ const TimesheetPage = () => {
 
   useEffect(() => {
     dataFetching();
-  }, [tick, search]);
+  }, [tick, search, project]);
 
   return (
     <div>
@@ -414,7 +424,11 @@ const TimesheetPage = () => {
           </Box>
         </div>
       </div>
-      <Filter open={openFilter} handleClose={handleCloseFilter} />
+      <Filter
+        open={openFilter}
+        handleClose={handleCloseFilter}
+        setProject={setProject}
+      />
       <Tambah
         open={openTambah}
         handleClose={handleCloseTambah}
