@@ -1,11 +1,4 @@
-import {
-  Box,
-  InputAdornment,
-  OutlinedInput,
-  Tab,
-  Tabs,
-  Typography,
-} from "@mui/material";
+import { Box, InputAdornment, OutlinedInput, Tab, Tabs } from "@mui/material";
 import { SyntheticEvent, useEffect, useState } from "react";
 import DataTable from "../components/Table";
 import { GridColDef } from "@mui/x-data-grid";
@@ -18,8 +11,12 @@ import Proyek from "./Dialogs/Proyek";
 import { DELETEEvent, GETAllEvents } from "../services/Event";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/id";
 import Swal from "sweetalert2";
 import Edit from "./Dialogs/Edit";
+
+dayjs.locale("id");
+dayjs.extend(relativeTime);
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -233,8 +230,6 @@ const TimesheetPage = () => {
 
     const fetching = await GETAllEvents(searchGo);
 
-    dayjs.extend(relativeTime);
-
     const data = fetching.data.data.map((item: any, i: number) => {
       const durationStart = dayjs(
         `${dayjs(item.time.startDate).format("YYYY-MM-DD")} ${
@@ -374,7 +369,23 @@ const TimesheetPage = () => {
                       </div>
                     </div>
                   </div>
-                  <DataTable props={{ rows, columns }} />
+                  <div>
+                    <DataTable props={{ rows, columns }} />
+                    <div className="flex justify-between items-center bg-gray-100 p-3 rounded">
+                      <div className=" flex flex-col gap-2">
+                        <div className=" text-blue-600">Total Durasi</div>
+                        <div className=" text-blue-600 text-lg font-bold">
+                          Total Pendapatan
+                        </div>
+                      </div>
+                      <div className=" flex flex-col gap-2">
+                        <div className=" text-blue-600">8 Jam 50 Menit</div>
+                        <div className=" text-blue-600 text-lg font-bold">
+                          Rp. 153.000
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </CustomTabPanel>
